@@ -91,10 +91,7 @@ export async function handleConnection(
       roomManager.joinRoom(chatId, ws);
     }
 
-    // Broadcast online status to all chat participants
-    presenceService.broadcastPresence(userId, true, chatIds);
-
-    // Send confirmation to client
+    // Send confirmation to client first
     const connectedPayload: ConnectedPayload = {
       userId,
       chatIds,
@@ -104,6 +101,29 @@ export async function handleConnection(
       type: 'connected',
       payload: connectedPayload,
     }));
+
+    // Send online status of all already-connected users in the same chats
+    const onlineUsers = new Set<string>();
+    for (const chatId of chatIds) {
+      const participants = roomManager.getRoomParticipants(chatId);
+      for (const participantWs of participants) {
+        const participant = presenceService.getUserByWs(participantWs);
+        if (participant && participant.userId !== userId && !onlineUsers.has(participant.userId)) {
+          // Send this user's online status to the newly connected user
+          ws.send(JSON.stringify({
+            type: 'user:online',
+            payload: {
+              userId: participant.userId,
+              online: true,
+            },
+          }));
+          onlineUsers.add(participant.userId);
+        }
+      }
+    }
+
+    // Broadcast this user's online status to all chat participants
+    presenceService.broadcastPresence(userId, true, chatIds);
 
     logger.userConnected(userId, chatIds);
   } catch (error) {

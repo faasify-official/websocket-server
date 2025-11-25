@@ -52,7 +52,7 @@ export async function handleChatMessage(
   
   logger.messageSent(chatId, user.userId, response.message.id);
 
-  // Broadcast message to all participants EXCEPT sender
+  // Broadcast message to all participants INCLUDING sender
   const messagePayload: ChatMessageReceivedPayload = {
     chatId,
     message: response.message,
@@ -63,5 +63,6 @@ export async function handleChatMessage(
     payload: messagePayload,
   });
 
-  roomManager.broadcastToRoom(chatId, messageStr, ws);
+  // Broadcast to everyone (no exclusion) so sender can confirm and get message ID
+  roomManager.broadcastToRoom(chatId, messageStr);
 }
