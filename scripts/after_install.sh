@@ -28,9 +28,10 @@ fi
 
 # Install dependencies if node_modules is not present or package.json changed
 echo "Installing dependencies..."
+rm -rf /home/ec2-user/.bun/install/cache/* 2>/dev/null || true
 bun install --production
 
 # Set proper permissions
-chown -R ec2-user:ec2-user /home/ec2-user/socket-server
+sudo chown -R ec2-user:ec2-user /home/ec2-user/socket-server
 
 echo "AfterInstall completed successfully"
