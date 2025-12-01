@@ -5,8 +5,11 @@ echo "Running ApplicationStart script..."
 
 cd /home/ec2-user/socket-server
 
+# Set HOME if not set
+export HOME=${HOME:-/home/ec2-user}
+
 # Ensure Bun is in PATH
-export BUN_INSTALL="$HOME/.bun"
+export BUN_INSTALL="/home/ec2-user/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
 # Check if PM2 is installed

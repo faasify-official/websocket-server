@@ -5,20 +5,23 @@ echo "Running AfterInstall script..."
 
 cd /home/ec2-user/socket-server
 
+# Set HOME if not set
+export HOME=${HOME:-/home/ec2-user}
+
 # Check if Bun is installed
 if ! command -v bun &> /dev/null; then
     echo "Bun not found. Installing Bun..."
     curl -fsSL https://bun.sh/install | bash
-    export BUN_INSTALL="$HOME/.bun"
+    export BUN_INSTALL="/home/ec2-user/.bun"
     export PATH="$BUN_INSTALL/bin:$PATH"
     
     # Add Bun to PATH for future sessions
-    echo 'export BUN_INSTALL="$HOME/.bun"' >> ~/.bashrc
-    echo 'export PATH="$BUN_INSTALL/bin:$PATH"' >> ~/.bashrc
+    echo 'export BUN_INSTALL="$HOME/.bun"' >> /home/ec2-user/.bashrc
+    echo 'export PATH="$BUN_INSTALL/bin:$PATH"' >> /home/ec2-user/.bashrc
 fi
 
 # Ensure Bun is in PATH
-export BUN_INSTALL="$HOME/.bun"
+export BUN_INSTALL="/home/ec2-user/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
 # Install dependencies if node_modules is not present or package.json changed
