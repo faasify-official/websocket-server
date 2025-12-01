@@ -26,7 +26,7 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 
 # Install dependencies if node_modules is not present or package.json changed
 echo "Installing dependencies..."
-bun install --production
+bun install --production --force
 
 # Set proper permissions
 chown -R ec2-user:ec2-user /home/ec2-user/socket-server
