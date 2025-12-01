@@ -11,7 +11,7 @@ else
     # Clean up old deployment files to avoid conflicts
     echo "Cleaning up old files..."
     cd /home/ec2-user/socket-server
-    sudo rm -rf node_modules dist .env 2>/dev/null || true
+    sudo rm -rf node_modules 2>/dev/null || true
 fi
 
 echo "BeforeInstall completed successfully"
