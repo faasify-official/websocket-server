@@ -26,6 +26,13 @@ else
     echo "Bun is already installed"
 fi
 
+# Clean up old node_modules to avoid conflicts
+if [ -d "node_modules" ]; then
+    echo "Removing old node_modules..."
+    sudo rm -rf node_modules 2>/dev/null || true
+    sudo rm -f bun.lock 2>/dev/null || true
+fi
+
 # Install dependencies if node_modules is not present or package.json changed
 echo "Installing dependencies..."
 rm -rf /home/ec2-user/.bun/install/cache/* 2>/dev/null || true
