@@ -1,0 +1,41 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 20
+    commands:
+      # Install Bun
+      - curl -fsSL https://bun.sh/install | bash
+      - export BUN_INSTALL="$HOME/.bun"
+      - export PATH="$BUN_INSTALL/bin:$PATH"
+      - bun --version
+  
+  pre_build:
+    commands:
+      - echo "Installing dependencies..."
+      - bun install
+  
+  build:
+    commands:
+      - echo "Running type check..."
+      - bun run typecheck
+      - echo "Building application..."
+      - bun run build
+      - echo "Build completed on $(date)"
+  
+  post_build:
+    commands:
+      - echo "Build phase complete"
+
+artifacts:
+  files:
+    - 'dist/**/*'
+    - 'package.json'
+    - 'node_modules/**/*'
+  name: socket-server-$(date +%Y%m%d-%H%M%S)
+
+cache:
+  paths:
+    - 'node_modules/**/*'
+    - '$HOME/.bun/**/*'
