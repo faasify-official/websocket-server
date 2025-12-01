@@ -33,6 +33,8 @@ artifacts:
     - 'dist/**/*'
     - 'package.json'
     - 'node_modules/**/*'
+    - 'appspec.yml'
+    - 'scripts/**/*'
   name: socket-server-$(date +%Y%m%d-%H%M%S)
 
 cache:
