@@ -7,11 +7,11 @@ echo "Running BeforeInstall script..."
 if [ ! -d "/home/ec2-user/socket-server" ]; then
     echo "Creating application directory..."
     mkdir -p /home/ec2-user/socket-server
+else
+    # Clean up old deployment files to avoid conflicts
+    echo "Cleaning up old files..."
+    cd /home/ec2-user/socket-server
+    rm -rf node_modules dist .env 2>/dev/null || true
 fi
-
-# Clean up old deployment files (optional)
-# Uncomment the following lines if you want to clean up before deploying
-# echo "Cleaning up old files..."
-# rm -rf /home/ec2-user/socket-server/*
 
 echo "BeforeInstall completed successfully"
